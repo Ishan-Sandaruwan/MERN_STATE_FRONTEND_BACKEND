@@ -29,3 +29,4 @@ pids/
 *.njsproj
 *.sln
 *.sw*
+.env
