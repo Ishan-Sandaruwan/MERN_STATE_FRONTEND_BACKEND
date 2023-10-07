@@ -24,6 +24,7 @@ export default function SignUp() {
     try {
       const result = await axios.post("/api/auth/signup", formData);
       if (result.status === 201) {
+        setLoading(false);
         setError("");
         setFormData({});
         navigate('/sign-in');
