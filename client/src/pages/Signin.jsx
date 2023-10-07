@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux'
+import {signInFailure,signInStart,signInSuccess} from '../redux/user/userSlice.js'
 
 export default function Signin() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState("");
+  // const [loading, setLoading] = useState(false);
+  const { loading , error } = useSelector((state)=> state.user);
 
   const handleChange = (e) => {
     setFormData({
@@ -19,22 +23,23 @@ export default function Signin() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    dispatch(signInStart());
     try {
       const result = await axios.post("/api/auth/signin", formData);
       if (result.status === 200) {
-        setLoading(false);
-        setError("");
+        // setLoading(false);
+        // setError("");
+        dispatch(signInSuccess(result.data));
         setFormData({});
         navigate('/');
       } else {
-        setError(result.data.message || "An error occurred");
+        // setError(result.data.message || "An error occurred");
+        dispatch(signInFailure(result.data.message));
       }
     } catch (error) {
-      setError(error.response ? error.response.data.message : "An error occurred");
+      dispatch(signInFailure(error.response.data.message));
+      // setError(error.response ? error.response.data.message : "An error occurred");
       // setError("username or email already added , try to sign in ")
-    } finally {
-      setLoading(false);
     }
   };  
   
