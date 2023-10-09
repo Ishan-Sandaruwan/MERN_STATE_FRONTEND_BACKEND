@@ -3,9 +3,27 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    background-color: rgb(241, 245, 241);
+body {
+  background-color: rgb(241, 245, 241);
 }
-.smooth{
-    transition: all .4s linear;
+.smooth {
+  transition: all 0.3s linear;
+}
+
+.anim {
+  animation: anim 3s linear infinite;
+}
+.anim:hover{
+    animation: none;
+}
+@keyframes anim {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
 }
