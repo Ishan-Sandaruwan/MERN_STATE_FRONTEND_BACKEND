@@ -1,17 +1,20 @@
-import react ,{ useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const [active, setActive] = useState("Home");
+  const { currentUser } = useSelector((state) => state.user);
+  // const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
-  const navLinks = [
-    { title: "Home", link: "/" },
-    { title: "About", link: "/about" },
-    { title: "Sign", link: "/sign-in" },
-  ];
+  // const navLinks = [
+  //   { title: "Home", link: "/" },
+  //   { title: "About", link: "/about" },
+  //   { title: "Sign", link: "/sign-in" },
+  //   { title: "Profile", link: "/profile" },
+  // ];
 
   return (
     <header className="bg-slate-200">
@@ -35,24 +38,34 @@ export default function Header() {
         </div>
         <div
           className={`${
-            toggle ? `flex absolute right-0 top-full flex-col bg-slate-200 px-6 pb-4 rounded-b-md ` : `hidden`
+            toggle
+              ? `flex absolute right-0 top-full flex-col bg-slate-200 px-6 pb-4 rounded-b-md `
+              : `hidden`
           } sm:relative sm:flex sm:flex-row sm:justify-end sm:items-center text-slate-950 sm:pb-0 sm:px-0`}
         >
-          {navLinks.map((link, index) => (
-            <Link
-              to={link.link}
-              key={index}
-              onClick={() => setActive(link.title)}
-            >
-              <button
-                className={`cursor-pointer hover:underline ${
-                  active === link.title && "text-slate-600 font-bold"
-                } ${index === navLinks.length - 1 ? `mr-0` : `sm:mr-4`} p-2 sm:p-0`}
-              >
-                {link.title}
-              </button>
+          <ul className="flex gap-4 sm:flex-row flex-col sm:p-0 p-6">
+            <Link to="/">
+              <li className=" text-slate-700 hover:underline">
+                Home
+              </li>
             </Link>
-          ))}
+            <Link to="/about">
+              <li className=" text-slate-700 hover:underline">
+                About
+              </li>
+            </Link>
+            <Link to="/profile">
+              {currentUser ? (
+                <img
+                  className="rounded-full h-7 w-7 object-cover"
+                  src={currentUser.avatar}
+                  alt="profile"
+                />
+              ) : (
+                <li className=" text-slate-700 hover:underline"> Sign in</li>
+              )}
+            </Link>
+          </ul>
         </div>
         {/* <div
           className={`${
