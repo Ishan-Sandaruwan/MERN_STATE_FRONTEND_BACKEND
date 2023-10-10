@@ -27,7 +27,7 @@ export default function OAuth() {
           },
         }
       );
-      dispatch(signInSuccess(data));
+      dispatch(signInSuccess(data.data));
       navigate("/");
     } catch (error) {
       console.log("could not sign with google", error);
